@@ -1,8 +1,5 @@
 import os
-import shutil
 import winreg
-
-import gdown
 
 
 class GameSettingsManager:
@@ -67,18 +64,11 @@ class GameSettingsManager:
             winreg.CloseKey(key)
 
     @staticmethod
-    def download_settings(game_folder: str) -> str:
-        url = input("Please enter url to google drive\n")
-        link_id = url.split("=")[-1]
-
-        gdown.download(id=link_id)
-
-        try:
-            shutil.move("settings.reg", game_folder)
-        except:
-            print("Settings file already exists in the game folder")
+    def download_settings(url: str, game_folder: str) -> str:
 
         settings_root = os.path.join(game_folder, "settings.reg")
+
+        os.system(f'curl -o "{settings_root}" "{url}&confirm=t" --no-progress-meter')
 
         return settings_root
 
@@ -90,9 +80,10 @@ class GameSettingsManager:
 
     def main(self) -> None:
         game_folder = self.find_game_folder()
+        url = "https://drive.usercontent.google.com/download?id=1IGENwFzLm8bBEboISadYSNEdxbnjz1fH&export=download&authuser=0"
 
         if game_folder:
-            settings_root = self.download_settings(game_folder)
+            settings_root = self.download_settings(url, game_folder)
             path, settings = self.extract_settings(settings_root)
             self.apply_settings(path, settings)
             self.start_game(game_folder)
