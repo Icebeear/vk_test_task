@@ -8,10 +8,5 @@ Simple script that allows you to set the settings for the game `Goose Goose Duck
     git clone https://github.com/Icebeear/vk_test_task.git
 
 
-#### 2) Install dependencies
-
-    pip install gdown
-
-
-#### 3) Run the script 
+#### 2) Run the script 
     python main.py
